@@ -1,7 +1,12 @@
 import { loadConfig } from '../config/loader.mjs';
-import { computeCurrentState, computeDiff } from '../github/diff.mjs';
-import { createRuleset, updateRuleset, deleteRuleset } from '../github/rulesets.mjs';
+import {
+  assertRepoExists,
+  createRuleset,
+  updateRuleset,
+  deleteRuleset,
+} from '../github/rulesets.mjs';
 import { putCodeowners } from '../github/codeowners.mjs';
+import { computeCurrentState, computeDiff } from '../github/diff.mjs';
 import { logger } from '../utils/logger.mjs';
 
 export async function applyCommand(opts) {
@@ -13,7 +18,12 @@ export async function applyCommand(opts) {
   }
 
   let applied = 0;
+  let skipped = 0;
   for (const manifest of targets) {
+    if (!(await isAvailable(manifest.repo))) {
+      skipped += 1;
+      continue;
+    }
     logger.info({ repo: manifest.repo }, 'Applying');
     const current = await computeCurrentState(manifest.repo);
     const ops = computeDiff(manifest, current, { prune: opts.prune });
@@ -42,5 +52,21 @@ export async function applyCommand(opts) {
       applied += 1;
     }
   }
-  logger.info({ applied, repos: targets.length }, 'Apply complete');
+  logger.info({ applied, skipped, repos: targets.length }, 'Apply complete');
+}
+
+async function isAvailable(repo) {
+  try {
+    await assertRepoExists(repo);
+    return true;
+  } catch (err) {
+    if (err.code === 'REPO_NOT_FOUND') {
+      logger.warn(
+        { repo },
+        'Repository not found; skipping. Create the repo or remove the manifest to clear this warning.',
+      );
+      return false;
+    }
+    throw err;
+  }
 }
