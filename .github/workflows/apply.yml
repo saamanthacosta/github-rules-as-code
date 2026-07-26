@@ -10,9 +10,6 @@ permissions:
 jobs:
   apply:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,5 +19,5 @@ jobs:
         run: npm ci
       - name: Apply
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_RULES_TOKEN }}
         run: npm run apply

@@ -59,8 +59,8 @@ Apply GitHub rulesets + CODEOWNERS to opt-in repos, declaratively, with one comm
 ## Auth
 
 - Local: `gh auth status` — ensures the user has authenticated `gh` with the right scopes.
-- CI: built-in `GITHUB_TOKEN` (auto-scoped to the runner repo).
-- The `apply` workflow upgrades the job-level permissions to `contents: write` only on the apply step; the workflow default is `contents: read`.
+- CI: a per-repo secret `GH_RULES_TOKEN` (PAT with `repo` scope). The default `GITHUB_TOKEN` is scoped to the runner repo only and cannot mutate rulesets on other repos.
+- The PAT must have access to every repo listed in `rules/manifests/`.
 
 ## Boundaries
 

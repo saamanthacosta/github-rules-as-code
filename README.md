@@ -20,7 +20,7 @@ Manual repo settings drift. We want a single source of truth that applies our ho
 
 - Node.js 20+ (`.nvmrc` pins it)
 - `gh` CLI authenticated (`gh auth status`)
-- `repo` + `administration` scopes on the token
+- For CI: a `GH_RULES_TOKEN` secret with `repo` scope (see AGENTS.md → CI credential setup)
 
 ## Quick start
 

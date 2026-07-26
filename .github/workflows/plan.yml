@@ -19,5 +19,5 @@ jobs:
         run: npm ci
       - name: Compute plan
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_RULES_TOKEN }}
         run: npm run plan

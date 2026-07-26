@@ -65,9 +65,24 @@ The `overrides` field is a partial ruleset payload that is deep-merged on top of
 
 - All API calls are HTTPS.
 - Authentication is handled by `gh` — never embed tokens.
-- The apply workflow declares `permissions: contents: read` globally and upgrades only the `apply` job.
+- The apply workflow declares `permissions: contents: read` globally and runs `gh` with `GH_TOKEN: ${{ secrets.GH_RULES_TOKEN }}`.
 - Plan mode is the default in CI on PRs; apply runs only on main after merge.
 - CODEOWNERS rule on this repo itself ensures a human reviewer is required.
+
+## CI credential setup
+
+The default `GITHUB_TOKEN` is scoped to the runner repo and cannot mutate rulesets on other repos. The workflows use a separate `GH_RULES_TOKEN` secret:
+
+1. Create a PAT at https://github.com/settings/tokens with **only** the `repo` scope (classic) or **Contents: write**, **Administration: write**, **Metadata: read** (fine-grained).
+2. The PAT must have access to every repo in `rules/manifests/`. For fine-grained tokens, grant access per-repo.
+3. Add the PAT as a secret named `GH_RULES_TOKEN` at https://github.com/saamanthacosta/github-rules-as-code/settings/secrets/actions.
+4. Rotate the PAT periodically. Add a calendar reminder or a dependabot-style watcher.
+
+Why not the default `GITHUB_TOKEN`:
+
+- It is scoped to the runner repo only.
+- It cannot create rulesets on other repos (cross-repo writes are not allowed).
+- Even on the same repo, the ruleset API requires `administration: write`, which the default token does not have without an explicit `permissions:` upgrade.
 
 ## Boundaries
 
