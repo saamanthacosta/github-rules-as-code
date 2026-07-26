@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Personal Default Ruleset",
+  "type": "object",
+  "required": ["name", "target", "enforcement", "rules"],
+  "properties": {
+    "name": { "type": "string", "minLength": 1 },
+    "target": { "type": "string", "enum": ["branch", "tag"] },
+    "enforcement": { "type": "string", "enum": ["active", "evaluate", "disabled"] },
+    "conditions": {
+      "type": "object",
+      "properties": {
+        "ref_name": {
+          "type": "object",
+          "properties": {
+            "include": { "type": "array", "items": { "type": "string" } },
+            "exclude": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "deletion",
+              "non_fast_forward",
+              "required_signatures",
+              "required_linear_history"
+            ]
+          },
+          "parameters": { "type": "object" }
+        }
+      }
+    }
+  }
+}

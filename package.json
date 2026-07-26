@@ -1,0 +1,25 @@
+{
+  "name": "github-rules-as-code",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "plan": "node src/index.mjs plan",
+    "apply": "node src/index.mjs apply",
+    "lint": "eslint src && prettier --check .",
+    "lint:fix": "eslint src --fix && prettier --write .",
+    "sync-skills": "node scripts/sync-skills.mjs"
+  },
+  "dependencies": {
+    "commander": "12.1.0",
+    "pino": "9.5.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "eslint": "10.8.0",
+    "prettier": "3.3.3"
+  }
+}

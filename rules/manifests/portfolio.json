@@ -1,0 +1,6 @@
+{
+  "repo": "saamanthacosta/portfolio",
+  "default": "personal-default",
+  "codeowners": ["@saamanthacosta"],
+  "overrides": {}
+}

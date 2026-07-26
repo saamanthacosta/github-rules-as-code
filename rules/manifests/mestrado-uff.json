@@ -1,0 +1,6 @@
+{
+  "repo": "saamanthacosta/mestrado-uff",
+  "default": "personal-default",
+  "codeowners": ["@saamanthacosta"],
+  "overrides": {}
+}
