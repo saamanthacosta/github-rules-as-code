@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       repo:
-        description: "Target repo (owner/name). Leave blank to plan all manifests."
+        description: 'Target repo (owner/name). Leave blank to plan all manifests.'
         required: false
         type: string
 
