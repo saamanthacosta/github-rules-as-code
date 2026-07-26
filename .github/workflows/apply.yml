@@ -1,6 +1,13 @@
 name: apply
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'rules/**'
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
   workflow_dispatch:
     inputs:
       repo:
