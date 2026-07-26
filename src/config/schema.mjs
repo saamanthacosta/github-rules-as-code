@@ -1,15 +1,16 @@
 import { z } from 'zod';
 
 export const rulesetRuleSchema = z.object({
-  type: z.enum(['deletion', 'non_fast_forward', 'required_signatures', 'required_linear_history']),
-  parameters: z
-    .object({
-      required_approving_review_count: z.number().int().nonnegative().optional(),
-      dismiss_stale_approvals: z.boolean().optional(),
-      require_code_owner_review: z.boolean().optional(),
-      require_last_push_approval: z.boolean().optional(),
-    })
-    .optional(),
+  type: z.enum([
+    'creation',
+    'deletion',
+    'non_fast_forward',
+    'pull_request',
+    'required_linear_history',
+    'required_signatures',
+    'update',
+  ]),
+  parameters: z.record(z.string(), z.unknown()).optional(),
 });
 
 export const branchPatternSchema = z.object({
@@ -33,8 +34,8 @@ export const defaultRulesetSchema = z.object({
     .object({
       ref_name: z
         .object({
-          include: z.array(z.string()).optional(),
-          exclude: z.array(z.string()).optional(),
+          include: z.array(z.string()).min(1),
+          exclude: z.array(z.string()),
         })
         .optional(),
     })

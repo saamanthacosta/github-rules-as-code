@@ -3,6 +3,12 @@ name: plan
 on:
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: "Target repo (owner/name). Leave blank to plan all manifests."
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -20,4 +26,9 @@ jobs:
       - name: Compute plan
         env:
           GH_TOKEN: ${{ secrets.GH_RULES_TOKEN }}
-        run: npm run plan
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.repo }}" ]; then
+            ARGS="--repo ${{ inputs.repo }}"
+          fi
+          npm run plan -- $ARGS
