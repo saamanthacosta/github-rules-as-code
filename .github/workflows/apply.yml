@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       repo:
-        description: "Target repo (owner/name). Leave blank to apply all manifests."
+        description: 'Target repo (owner/name). Leave blank to apply all manifests.'
         required: false
         type: string
       prune:
-        description: "Allow deletion of remote rulesets"
+        description: 'Allow deletion of remote rulesets'
         required: false
         type: boolean
         default: false
